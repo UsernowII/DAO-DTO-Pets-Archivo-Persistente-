@@ -1,34 +1,28 @@
 package co.edu.unbosque.model;
 
-import co.edu.unbosque.model.persistence.Archivo;
+import co.edu.unbosque.model.persistence.Connect;
 import co.edu.unbosque.model.persistence.MascotaDAO;
 
 import java.io.File;
 import java.util.ArrayList;
 
-//CONTIENE EL ARREGLO DE OBJETOS
+//CONTIENE EL OBJETO CONNECT
 //CONTIENE EL OBJETO DAO
 public class MascotaDTO {
 
-    private ArrayList<Mascota> veterinaria;
     private MascotaDAO mascota_dao;
-    private File file = new File("data/informacion.dat");
-    private Archivo archivo;
+    private Connect connect;
 
+    /**
+     * Método constructor para usar los metodos de connect mediante el Dao
+     */
     public MascotaDTO() {
-        veterinaria = new ArrayList<Mascota>();
-        archivo = new Archivo(file);
-        mascota_dao = new MascotaDAO(archivo);
-        veterinaria = archivo.leerArchivo(file);
+        connect = new Connect();
+        mascota_dao = new MascotaDAO(connect);
     }
 
-    public ArrayList<Mascota> getVeterinaria() {
-        return veterinaria;
-    }
 
-    public void setVeterinaria(ArrayList<Mascota> veterinaria) {
-        this.veterinaria = veterinaria;
-    }
+    //GETTER AND SETTER
 
     public MascotaDAO getMascota_dao() {
         return mascota_dao;
@@ -37,22 +31,14 @@ public class MascotaDTO {
     public void setMascota_dao(MascotaDAO mascota_dao) {
         this.mascota_dao = mascota_dao;
     }
-
-    public File getFile() {
-        return file;
+    public Connect getConnect(){
+        return connect;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setConnect(Connect connect){
+        this.connect = connect;
     }
 
-    public Archivo getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(Archivo archivo) {
-        this.archivo = archivo;
-    }
 
 
 }

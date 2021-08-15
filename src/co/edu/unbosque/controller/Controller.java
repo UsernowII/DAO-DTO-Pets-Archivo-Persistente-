@@ -1,16 +1,17 @@
 package co.edu.unbosque.controller;
 
+import co.edu.unbosque.model.Mascota;
 import co.edu.unbosque.model.MascotaDTO;
 import co.edu.unbosque.view.VistaConsola;
 
 public class Controller {
 
     private VistaConsola vista;
-    private MascotaDTO mas;
+    private MascotaDTO dto;
 
     public Controller() {
         vista = new VistaConsola();
-        mas = new MascotaDTO();
+        dto = new MascotaDTO();
         funcionar();
     }
 
@@ -19,59 +20,97 @@ public class Controller {
         int e = 0;
         int opcion = 0;
 
-        String menu = "jnckjsnksdj" + "\n"
-                + "1. Mod" + "\n"
-                + "2. Salir" + "\n"
+        String menu = "operaciones" + "\n"
+                + "1. adicionar" + "\n"
+                + "2. ver todos" + "\n"
+                + "3. buscar" + "\n"
+                + "4. elminar" + "\n"
+                + "5. modificar" + "\n"
+                + "6. consulta mayores" + "\n"
+                + "7. salir" + "\n"
                 + "Opcion: ";
         do {
             opcion = vista.leerDatoEntero(menu);
 
             switch (opcion) {
                 case 1:
-                    opcionModificar();
+                    insertarMascota();
                     break;
                 case 2:
-                    vista.mostrarInformacion("Chao... Gracias");
+                    verListado();
                     break;
+                case 3:
+                    buscarMascota();
+                    break;
+                case 4:
+                    elminiarMascosta();
+                    break;
+                case 5:
+                    modificarMascota();
+                    break;
+                case 6:
+                    consultaMyoresEdad();
+                    break;
+                case 7:
+                    vista.mostrarInformacion("Hasta pronto");
                 default:
                     vista.mostrarInformacion("Error: escogio una opción inválida");
             }
-        } while (opcion != 2);
-
-        vista.mostrarInformacion("" + mas.getMascota_dao().mostrarListado(mas.getFile()));
-        /*
-        vista.mostrarInformacion(""+mas.getMascota_dao().agregarMascota("Luis", 12, mas.getVeterinaria(), mas.getFile()));
-        vista.mostrarInformacion(""+mas.getMascota_dao().agregarMascota("Max", 2, mas.getVeterinaria(), mas.getFile()));
-        //vista.mostrarInformacion(""+mas.getMascota_dao().agregarMascota("Luis", 34, mas.getVeterinaria()));
-        vista.mostrarInformacion(""+mas.getMascota_dao().agregarMascota("Veneno", 5, mas.getVeterinaria(), mas.getFile()));
-        
-        nom = vista.leerDatoString("Digite nombre: ");
-        e = vista.leerDatoEntero("Digite edad: ");
-        
-        vista.mostrarInformacion(""+mas.getMascota_dao().agregarMascota(nom, e, mas.getVeterinaria(), mas.getFile()));
-        
-        nom = vista.leerDatoString("Digite nombre: ");
-        e = vista.leerDatoEntero("Digite edad: ");
-        
-        vista.mostrarInformacion(""+mas.getMascota_dao().agregarMascota(nom, e, mas.getVeterinaria(), mas.getFile()));
-         */
+        } while (opcion != 7);
 
     }
 
-    public void opcionModificar() {
+    public void modificarMascota() {
 
-        String nom = vista.leerDatoString("Digite nombre de la mascota a actualizar: ");
-        if (mas.getMascota_dao().buscarMascota(nom, mas.getVeterinaria()) != null) {
-            String nom2 = vista.leerDatoString("Digite nuevo nombre de la mascota a actualizar: ");
-            int e = vista.leerDatoEntero("Digite nueva edad: ");
-
-            vista.mostrarInformacion("" + mas.getMascota_dao().modificarMascota(nom, nom2, e, mas.getVeterinaria(), mas.getFile()));
-            vista.mostrarInformacion("La mascota fue actualizada");
+        String n = vista.leerDatoString("Digite nombre de la mascota a actualizar: ");
+        if (dto.getMascota_dao().buscarMascota(n)!= null) {
+            int e = vista.leerDatoEntero("Edad mascota");
+            if (dto.getMascota_dao().modificarMascota(n,e)){
+                vista.mostrarInformacion("Se modifico el registro");
+            }else {
+                vista.mostrarInformacion("No se actualizo registro");
+            }
         } else {
-            vista.mostrarInformacion("La mascota no está registrada");
+            vista.mostrarInformacion("no se actualizo registro");
         }
-        vista.mostrarInformacion("");
-        vista.mostrarInformacion("" + mas.getMascota_dao().mostrarListado(mas.getFile()));
+    }
 
+    public void insertarMascota(){
+        String n = vista.leerDatoString("Nombre mascota");
+        int e = vista.leerDatoEntero("Edad mascota: ");
+        if (dto.getMascota_dao().agregarMascota(n,e)){
+            vista.mostrarInformacion("Se agrego");
+        }else{
+            vista.mostrarInformacion("No se agrego");
+        }
+    }
+
+    public void verListado(){
+        String rta = dto.getMascota_dao().mostrarListado();
+        vista.mostrarInformacion(rta);
+    }
+
+
+    public void buscarMascota(){
+        String n = vista.leerDatoString("Digite el nombre de la mascota a bucar");
+        Mascota rta = dto.getMascota_dao().buscarMascota(n);
+        if (rta != null){
+            vista.mostrarInformacion(rta.toString());
+        }else {
+            vista.mostrarInformacion("No se encontro la BD");
+        }
+    }
+
+    public void elminiarMascosta(){
+        String n = vista.leerDatoString("Nombre mascosta a eliminar");
+        if (dto.getMascota_dao().eliminarMascota(n)){
+            vista.mostrarInformacion("Se elimino registro");
+        }else{
+            vista.mostrarInformacion("no Se elimino registro");
+        }
+
+    }
+    public void consultaMyoresEdad(){
+        int edad = vista.leerDatoEntero("Digite l");
     }
 }
